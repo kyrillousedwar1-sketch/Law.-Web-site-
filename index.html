@@ -257,7 +257,7 @@
 
   <section class="card">
     <h2>رفع تسجيل جاهز</h2>
-    <p class="sub">لو معاكي ريكورد مسجّل قبل كده (mp3, m4a, wav...)، ارفعيه هنا وهيتفرّغ لوحده جوه المتصفح — من غير ما يتبعت لأي سيرفر. أول مرة بيحمّل موديل تفريغ الصوت (حجمه حوالي 70-150 ميجا) وبعد كده بيبقى محفوظ. التفريغ للملفات الطويلة بياخد وقت حسب قوة الموبايل، سيبيه شغال وسيبي الشاشة مفتوحة.</p>
+    <p class="sub">لو معاكي ريكورد مسجّل قبل كده (mp3, m4a, wav...)، ارفعيه هنا وهيتفرّغ لوحده جوه المتصفح — من غير ما يتبعت لأي سيرفر. أول مرة بيحمّل موديل تفريغ الصوت (حجمه حوالي 40 ميجا) وبعد كده بيبقى محفوظ. لو النسبة واقفة عند رقم من غير ما تتحرك لفترة طويلة، جربي واي فاي بدل البيانات أو أعيدي المحاولة — أحيانًا مصدر تحميل الموديل بيبقى بطيء مع بعض الشبكات. التفريغ للملفات الطويلة بياخد وقت حسب قوة الموبايل، سيبيه شغال وسيبي الشاشة مفتوحة.</p>
     <div class="rec-row">
       <input type="file" id="audioFile" accept="audio/*" style="flex:1;">
       <button class="btn-gold" id="btnTranscribeFile">فرّغ الملف ده</button>
@@ -983,10 +983,13 @@ async function loadAsrPipeline(){
   if(asrPipeline) return asrPipeline;
   uploadStatus.textContent = 'بيحمّل موديل التفريغ لأول مرة (استني شوية)...';
   const { pipeline } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
-  asrPipeline = await pipeline('automatic-speech-recognition', 'Xenova/whisper-base', {
+  asrPipeline = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny', {
     progress_callback: (p) => {
-      if(p && p.progress){
-        uploadStatus.textContent = `بيحمّل الموديل... ${Math.round(p.progress)}%`;
+      if(p && p.status === 'progress' && typeof p.progress === 'number'){
+        const fileLabel = p.file ? ` (${p.file})` : '';
+        uploadStatus.textContent = `بيحمّل الموديل${fileLabel}... ${Math.round(p.progress)}%`;
+      } else if(p && p.status === 'ready'){
+        uploadStatus.textContent = 'الموديل جاهز، بيبدأ التفريغ...';
       }
     }
   });

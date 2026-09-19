@@ -1057,7 +1057,8 @@ document.getElementById('btnTranscribeFile').addEventListener('click', async () 
       uploadStatus.textContent = 'مقدرتش أطلع نص من الملف ده';
     }
   }catch(err){
-    uploadStatus.textContent = 'حصل خطأ أثناء التفريغ، جرّبي ملف تاني أو صيغة تانية';
+    uploadStatus.textContent = 'حصل خطأ: ' + (err && err.message ? err.message : 'غير معروف') + ' — جرّبي ملف تاني أو صيغة تانية';
+    console.error('Transcription error:', err);
   }
 });
 </script>

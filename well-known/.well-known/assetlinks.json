@@ -1,1 +1,9 @@
 
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "Com.LawStudy",
+        "sha256_cert_fingerprints": ["C0:AA:CE:64:1D:4B:02:7A:2A:DF:8D:AD:FB:4F:AE:5E:CF:B7:75:3C:83:F2:A2:65:72:E8:EC:49:9C:54:A2:96"]
+      }
+    }]
